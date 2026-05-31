@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELOURA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Lato:wght@300;400;700;900&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #f5ede6;
+    --dark-rose: #7a2a35;
+    --rose: #9b3a47;
+    --text-dark: #2c2c2c;
+    --text-mid: #555;
+    --text-light: #888;
+    --border: #e0d5cf;
+    --card-bg: #fff;
+    --bg-light: #faf5f2;
+  }
+  body { font-family: 'Lato', sans-serif; background: #f0e8e2; color: var(--text-dark); min-height: 100vh; }
+
+  /* PAGE SYSTEM */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* NAVBAR */
+  .navbar {
+    background: var(--dark-rose);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; height: 48px;
+  }
+  .navbar-logo { display: flex; align-items: center; gap: 8px; }
+  .navbar-logo .logo-icon {
+    width: 28px; height: 28px; border: 1.5px solid #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; color: #fff; font-size: 14px; font-weight: 600;
+  }
+  .navbar-logo .logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    color: #fff; font-size: 18px; font-weight: 500; letter-spacing: 2px;
+  }
+  .navbar-links { display: flex; gap: 28px; }
+  .navbar-links a { color: #fff; text-decoration: none; font-size: 12px; font-weight: 400; letter-spacing: 0.5px; cursor: pointer; }
+  .navbar-links a:hover { opacity: 0.8; }
+
+  /* HERO */
+  .hero { position: relative; height: 200px; overflow: hidden; background: #d4c4bc; }
+  .hero-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #c9b8af 0%, #b8a49a 30%, #d4c4bc 60%, #c0aea5 100%);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .hero-items { display: flex; gap: 6px; align-items: center; }
+  .hero-item { background: rgba(255,255,255,0.35); border-radius: 4px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-weight: 400; letter-spacing: 4px;
+    text-align: center; margin: 20px 0 14px; color: var(--text-dark);
+  }
+
+  /* CATEGORIES */
+  .categories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 16px 16px; }
+  .cat-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 6px;
+    padding: 12px 10px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: box-shadow 0.2s; min-height: 56px;
+  }
+  .cat-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .puma-logo { color: #000; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 18px; }
+  .nb-logo { color: #000; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 13px; }
+  .adidas-logo { color: #000; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 16px; letter-spacing: 1px; }
+
+  /* RECOMMENDED */
+  .rec-section { padding: 0 16px 16px; }
+  .rec-title { font-size: 12px; font-weight: 700; margin-bottom: 10px; color: var(--text-dark); }
+  .rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .rec-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 6px; cursor: pointer; transition: box-shadow 0.2s;
+  }
+  .rec-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .rec-card-img {
+    width: 100%; aspect-ratio: 1; background: var(--cream);
+    border-radius: 4px; margin-bottom: 6px;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .rec-card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .rec-card-name { font-size: 9px; color: var(--text-dark); line-height: 1.3; margin-bottom: 3px; }
+  .rec-card-price { font-size: 9px; color: var(--text-mid); font-weight: 600; }
+
+  /* BANNER */
+  .banner-section {
+    margin: 0 16px 16px; height: 90px; border-radius: 8px; overflow: hidden;
+    background: linear-gradient(135deg, #2c2c2c 0%, #4a3a3a 50%, #1a1a1a 100%);
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .banner-logos { display: flex; gap: 20px; align-items: center; }
+  .banner-logo-item { color: rgba(255,255,255,0.7); font-weight: 900; font-size: 14px; letter-spacing: 1px; }
+  .banner-bg-text {
+    position: absolute; font-size: 60px; font-weight: 900;
+    color: rgba(255,255,255,0.05); letter-spacing: 10px; user-select: none;
+  }
+
+  /* ABOUT */
+  .about-section { background: var(--dark-rose); padding: 16px; }
+  .about-badge {
+    background: rgba(255,255,255,0.15); color: #fff; font-size: 9px; letter-spacing: 1px;
+    padding: 3px 8px; border-radius: 2px; display: inline-block; margin-bottom: 10px; text-transform: uppercase;
+  }
+  .about-text { color: rgba(255,255,255,0.85); font-size: 10px; line-height: 1.7; margin-bottom: 14px; }
+  .contact-btn {
+    background: transparent; border: 1px solid rgba(255,255,255,0.6);
+    color: #fff; font-size: 10px; letter-spacing: 1px; padding: 6px 16px;
+    cursor: pointer; border-radius: 2px; margin-bottom: 12px; text-transform: uppercase;
+  }
+  .contact-info { color: rgba(255,255,255,0.7); font-size: 10px; line-height: 1.8; }
+  .footer-copy {
+    background: var(--dark-rose); text-align: center;
+    color: rgba(255,255,255,0.5); font-size: 9px; padding: 10px 16px 16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* BRAND PAGES */
+  .brand-page { background: var(--bg-light); min-height: 100vh; }
+  .brand-header {
+    background: #fff; padding: 14px 20px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+  }
+  .back-btn { background: none; border: none; cursor: pointer; color: var(--dark-rose); font-size: 18px; padding: 0; }
+  .brand-header-logo { flex: 1; display: flex; justify-content: center; }
+  .brand-header-logo .brand-name { font-weight: 900; font-size: 22px; letter-spacing: 2px; color: #000; font-family: 'Lato', sans-serif; }
+
+  /* ADD PRODUCT BTN in header */
+  .add-prod-btn {
+    background: var(--dark-rose); color: #fff; border: none;
+    border-radius: 6px; padding: 6px 10px; font-size: 11px;
+    cursor: pointer; display: flex; align-items: center; gap: 4px;
+    white-space: nowrap; font-family: 'Lato', sans-serif; font-weight: 700;
+    transition: background 0.2s;
+  }
+  .add-prod-btn:hover { background: var(--rose); }
+
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #e07070; display: inline-block; margin-right: 6px; }
+
+  /* PRODUCT GRID */
+  .product-grid-section { padding: 16px; }
+  .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+  .product-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 8px 8px; cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s; position: relative;
+  }
+  .product-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); transform: translateY(-2px); }
+
+  .product-card-img {
+    width: 100%; aspect-ratio: 1; background: var(--cream);
+    border-radius: 6px; margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+  }
+  .product-card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* UPLOAD OVERLAY on product card */
+  .upload-overlay {
+    position: absolute; inset: 0; background: rgba(122,42,53,0.75);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s; border-radius: 6px;
+    gap: 4px; cursor: pointer;
+  }
+  .product-card-img:hover .upload-overlay { opacity: 1; }
+  .upload-overlay-icon { font-size: 20px; }
+  .upload-overlay-text { color: #fff; font-size: 8px; font-weight: 700; letter-spacing: 0.5px; text-align: center; }
+
+  /* Emoji placeholder */
+  .prod-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+
+  .product-card-name { font-size: 9px; color: var(--text-dark); line-height: 1.35; margin-bottom: 4px; }
+  .product-card-price { font-size: 9px; color: var(--text-mid); font-weight: 700; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-around;
+    padding: 8px 0 10px; z-index: 100;
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    cursor: pointer; color: var(--text-light); font-size: 10px; border: none; background: none;
+  }
+  .nav-item.active { color: var(--dark-rose); }
+  .nav-icon { font-size: 18px; }
+  .page-content { padding-bottom: 65px; }
+
+  /* PRODUCT DETAIL MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; }
+  .modal-overlay.open { display: flex; }
+  .modal-sheet {
+    background: #fff; border-radius: 16px 16px 0 0;
+    width: 100%; padding: 20px 20px 80px;
+    max-height: 70vh; overflow-y: auto; position: relative;
+  }
+  .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
+  .modal-img {
+    width: 100%; aspect-ratio: 1; background: var(--cream);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 60px; margin-bottom: 16px; overflow: hidden;
+  }
+  .modal-img img { width: 100%; height: 100%; object-fit: cover; }
+  .modal-name { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .modal-price { font-size: 14px; color: var(--dark-rose); font-weight: 700; margin-bottom: 16px; }
+  .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-mid); }
+  .add-to-cart {
+    width: 100%; background: var(--dark-rose); color: #fff;
+    border: none; padding: 14px; border-radius: 8px;
+    font-size: 13px; letter-spacing: 1px; cursor: pointer; font-weight: 600;
+  }
+  .add-to-cart:hover { background: var(--rose); }
+
+  /* ADD PRODUCT MODAL */
+  .add-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 300; align-items: center; justify-content: center; }
+  .add-modal-overlay.open { display: flex; }
+  .add-modal {
+    background: #fff; border-radius: 16px; width: 340px; max-width: 95vw;
+    padding: 24px; position: relative; animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .add-modal-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--dark-rose); margin-bottom: 4px; }
+  .add-modal-sub { font-size: 11px; color: var(--text-light); margin-bottom: 20px; }
+  .add-modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-mid); }
+
+  /* Upload area in modal */
+  .img-drop-area {
+    border: 2px dashed var(--border); border-radius: 10px; padding: 20px;
+    text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 14px;
+    background: var(--bg-light); position: relative; overflow: hidden;
+  }
+  .img-drop-area:hover { border-color: var(--rose); background: #fdf5f5; }
+  .img-drop-area.has-img { padding: 0; border-style: solid; border-color: var(--rose); }
+  .img-drop-area.has-img img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; display: block; }
+  .img-drop-area input { display: none; }
+  .img-drop-icon { font-size: 28px; margin-bottom: 6px; }
+  .img-drop-text { font-size: 11px; color: var(--text-light); }
+  .img-change-overlay {
+    position: absolute; inset: 0; background: rgba(122,42,53,0.55);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 12px; font-weight: 700; opacity: 0;
+    transition: opacity 0.2s; border-radius: 8px;
+  }
+  .img-drop-area.has-img:hover .img-change-overlay { opacity: 1; }
+
+  .form-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
+  .form-input {
+    width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
+    border-radius: 8px; font-family: 'Lato', sans-serif; font-size: 12px;
+    color: var(--text-dark); background: var(--bg-light); outline: none;
+    transition: border-color 0.2s; margin-bottom: 12px;
+  }
+  .form-input:focus { border-color: var(--rose); background: #fff; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .form-row .form-input { margin-bottom: 0; }
+  .btn-add {
+    width: 100%; padding: 12px; background: var(--dark-rose); color: #fff;
+    border: none; border-radius: 8px; font-family: 'Lato', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 14px;
+    letter-spacing: 0.5px; transition: background 0.2s;
+  }
+  .btn-add:hover { background: var(--rose); }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--dark-rose); color: #fff; padding: 10px 22px;
+    border-radius: 30px; font-size: 12px; font-weight: 600;
+    z-index: 500; opacity: 0; transition: all 0.3s; pointer-events: none; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg-light); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* Hidden file inputs */
+  .hidden-file { display: none; }
+
+  /* =========================
+   HERO SLIDER PREMIUM
+========================= */
+
+.hero-slider{
+  position:relative;
+  width:100%;
+  height:85vh;
+  overflow:hidden;
+  background:#000;
+}
+
+.hero-slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity 1.2s ease;
+}
+
+.hero-slide.active{
+  opacity:1;
+  z-index:2;
+}
+
+.hero-media{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:brightness(0.65);
+}
+
+.hero-content{
+  position:absolute;
+  left:8%;
+  bottom:15%;
+  color:#fff;
+  z-index:5;
+  animation:fadeUp 1s ease;
+}
+
+.hero-sub{
+  font-size:12px;
+  letter-spacing:4px;
+  margin-bottom:12px;
+  color:#d8b4b4;
+}
+
+.hero-content h1{
+  font-family:'Cormorant Garamond', serif;
+  font-size:58px;
+  line-height:1;
+  margin-bottom:22px;
+  font-weight:500;
+}
+
+.hero-btn{
+  padding:14px 28px;
+  border:none;
+  background:#fff;
+  color:#111;
+  font-weight:700;
+  letter-spacing:2px;
+  cursor:pointer;
+  transition:0.3s;
+  border-radius:50px;
+}
+
+.hero-btn:hover{
+  transform:translateY(-3px);
+  background:#d4a5a5;
+  color:#fff;
+}
+
+.hero-dots{
+  position:absolute;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:10px;
+  z-index:10;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:rgb(252, 252, 252);
+  transition:0.3s;
+}
+
+.dot.active{
+  background:#fff;
+  transform:scale(1.2);
+}
+
+/* SMOOTH ANIMATION */
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================
+   MODERN DARK LUXURY UI
+========================= */
+
+body{
+  background:#f5ede6;
+  color:#fff;
+}
+
+.navbar{
+  background: #f5ede6(0,0,0,0.6);
+  backdrop-filter:blur(12px);
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:100;
+}
+
+.cat-card,
+.product-card,
+.rec-card{
+  background:#a3a3a3;
+  border:1px solid #f5ede6(255,255,255,0.06);
+}
+
+
+.product-card-name,
+.rec-card-name{
+  color:#fff;
+}
+
+.product-card-price,
+.rec-card-price{
+  color:#d6a7a7;
+}
+
+.section-title{
+  color:#fff;
+}
+
+.bottom-nav{
+  background:rgba(20,20,20,0.85);
+  backdrop-filter:blur(14px);
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+  .hero-slider{
+    height:72vh;
+  }
+
+  .hero-content{
+    left:6%;
+    bottom:12%;
+  }
+
+  .hero-content h1{
+    font-size:38px;
+  }
+
+  .hero-btn{
+    padding:11px 20px;
+    font-size:11px;
+  }
+
+  .categories-grid{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .product-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .navbar-links{
+    gap:16px;
+  }
+
+  .navbar-links a{
+    font-size:10px;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ========== PAGE 1: HOME ========== -->
+<div id="page1" class="page active">
+  <div class="page-content">
+    <nav class="navbar">
+      <div class="navbar-logo">
+        <div class="logo-icon">V</div>
+        <span class="logo-text">VELOURA</span>
+      </div>
+      <div class="navbar-links">
+        <a onclick="showPage(1)">Home</a>
+        <a onclick="showPage(1)">Categories</a>
+        <a onclick="showPage(2)">Product</a>
+        <a>About</a>
+      </div>
+    </nav>
+
+    <div class="hero-slider">
+
+  <!-- SLIDE 1 -->
+  <div class="hero-slide active">
+    <img src="pum.jpeg" class="hero-media">
+    <div class="hero-content">
+      <p class="hero-sub">NEW COLLECTION</p>
+      <h1>Street Luxury<br>Fashion</h1>
+    
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="hero-slide">
+   <img src="dids benner.jpeg" class="hero-media">
+
+    <div class="hero-content">
+      <p class="hero-sub">VELOURA EXCLUSIVE</p>
+      <h1>Move With<br>Confidence</h1>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="hero-slide">
+    <img src="nike benner.jpeg" class="hero-media">
+
+    <div class="hero-content">
+      <p class="hero-sub">LIMITED EDITION</p>
+      <h1>Minimal<br>Aesthetic</h1>
+    </div>
+  </div>
+
+  <!-- DOTS -->
+  <div class="hero-dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+
+</div>
+
+    <p class="section-title">C a t e g o r i e s</p>
+    <div class="categories-grid">
+      <div class="cat-card" onclick="showPage(2)"><span class="PUMA-logo">PUMA</span></div>
+      <div class="cat-card" onclick="showPage(3)"><span class="NIKE-logo">NIKE</span></div>
+      <div class="cat-card" onclick="showPage(4)"><span class="NEW BALANCE-logo">NEW BALANCE</span></div>
+      <div class="cat-card" onclick="showPage(5)"><span class="ADIDAS-logo">adidas</span></div>
+    </div>
+
+    <div class="rec-section">
+      <p class="rec-title">Recommended For You</p>
+      <div class="rec-grid" id="recGrid">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <div class="banner-section">
+      <span class="banner-bg-text">VELOURA</span>
+      <div class="banner-logos">
+        <div class="banner-logo-item">ADIDAS</div>
+        <div style="color:rgba(255,255,255,0.3)">|</div>
+        <div class="banner-logo-item">PUMA</div>
+        <div style="color:rgba(255,255,255,0.3)">|</div>
+        <div class="banner-logo-item">NEW BALANCE</div>
+        <div class="banner-logo-item">NIKE</div>
+        <div style="color:rgba(255,255,255,0.3)">|</div>
+      </div>
+    </div>
+
+    <div class="about-section">
+      <span class="about-badge">About Us</span>
+      <p class="about-text">Di dunia fashion dan olahraga, Nike, Adidas, Puma, dan New Balance dikenal sebagai brand global dengan kualitas, kenyamanan, dan gaya yang khas. Veloura hadir untuk menggabungkan semua itu dalam satu tempat, menghadirkan pilihan terbaik untuk menunjang gaya dan aktivitas setiap hari.</p>
+      <button class="contact-btn">Contact</button>
+      <div class="contact-info">
+        <div>087654329978</div>
+        <div>@VELOURA_Official</div>
+      </div>
+    </div>
+    <div class="footer-copy">VELOURA copyright by Maya Rani</div>
+  </div>
+</div>
+
+<!-- ========== PAGES 2-5: BRAND PAGES ========== -->
+<!-- PAGE 2: PUMA -->
+<div id="page2" class="page">
+  <div class="page-content">
+    <div class="brand-header">
+      <button class="back-btn" onclick="showPage(1)">&#8592;</button>
+      <div class="brand-header-logo"><span class="brand-name" style="font-size:26px;letter-spacing:3px;">PUMA</span></div>
+      <button class="add-prod-btn" onclick="openAddModal(2)">+ Tambah</button>
+    </div>
+    <div class="product-grid-section">
+      <div style="margin-bottom:10px;font-size:11px;color:var(--text-mid);" id="count2">
+        <span class="status-dot"></span><span id="countNum2">9</span> Products
+      </div>
+      <div class="product-grid" id="grid2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: NIKE -->
+<div id="page3" class="page">
+  <div class="page-content">
+    <div class="brand-header">
+      <button class="back-btn" onclick="showPage(1)">&#8592;</button>
+      <div class="brand-header-logo">
+        <svg width="70" height="26" viewBox="0 0 70 26"><path d="M70 0C52.5 0 5.8 21 0 26h70V0z" fill="#000"/></svg>
+      </div>
+      <button class="add-prod-btn" onclick="openAddModal(3)">+ Tambah</button>
+    </div>
+    <div class="product-grid-section">
+      <div style="margin-bottom:10px;font-size:11px;color:var(--text-mid);">
+        <span class="status-dot"></span><span id="countNum3">9</span> Products
+      </div>
+      <div class="product-grid" id="grid3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: NEW BALANCE -->
+<div id="page4" class="page">
+  <div class="page-content">
+    <div class="brand-header">
+      <button class="back-btn" onclick="showPage(1)">&#8592;</button>
+      <div class="brand-header-logo"><span class="brand-name" style="font-size:14px;">new balance</span></div>
+      <button class="add-prod-btn" onclick="openAddModal(4)">+ Tambah</button>
+    </div>
+    <div class="product-grid-section">
+      <div style="margin-bottom:10px;font-size:11px;color:var(--text-mid);">
+        <span class="status-dot"></span><span id="countNum4">9</span> Products
+      </div>
+      <div class="product-grid" id="grid4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: ADIDAS -->
+<div id="page5" class="page">
+  <div class="page-content">
+    <div class="brand-header">
+      <button class="back-btn" onclick="showPage(1)">&#8592;</button>
+      <div class="brand-header-logo"><span class="brand-name" style="letter-spacing:2px;">adidas</span></div>
+      <button class="add-prod-btn" onclick="openAddModal(5)">+ Tambah</button>
+    </div>
+    <div class="product-grid-section">
+      <div style="margin-bottom:10px;font-size:11px;color:var(--text-mid);">
+        <span class="status-dot"></span><span id="countNum5">9</span> Products
+      </div>
+      <div class="product-grid" id="grid5"></div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="modal-overlay" id="productModal" onclick="closeDetailModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeDetailModalDirect()">✕</button>
+    <div class="modal-img" id="modalImg"><span id="modalEmoji">👟</span></div>
+    <p class="modal-name" id="modalName">Product Name</p>
+    <p class="modal-price" id="modalPrice">IDR 0</p>
+    <button class="add-to-cart">+ Add to Cart</button>
+  </div>
+</div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="add-modal-overlay" id="addModal">
+  <div class="add-modal">
+    <button class="add-modal-close" onclick="closeAddModal()">✕</button>
+    <div class="add-modal-title">Tambah Produk</div>
+    <div class="add-modal-sub">Upload foto dan isi detail produk</div>
+
+    <div class="img-drop-area" id="dropArea" onclick="triggerUpload()">
+      <input type="file" id="newProdImg" accept="image/*" onchange="handleNewImg(event)">
+      <div class="img-drop-icon">🖼️</div>
+      <div class="img-drop-text">Klik untuk pilih foto produk<br><small>JPG, PNG, WEBP</small></div>
+      <div class="img-change-overlay">🔄 Ganti Foto</div>
+    </div>
+
+    <label class="form-label">Nama Produk</label>
+    <input class="form-input" id="newName" type="text" placeholder="Contoh: Puma Speedcat - Pink">
+
+    <div class="form-row" style="margin-bottom:12px;">
+      <div>
+        <label class="form-label">Harga (IDR)</label>
+        <input class="form-input" id="newPrice" type="number" placeholder="1299000" min="0">
+      </div>
+      <div>
+        <label class="form-label">Emoji</label>
+        <input class="form-input" id="newEmoji" type="text" placeholder="👟" maxlength="2">
+      </div>
+    </div>
+
+    <button class="btn-add" onclick="saveNewProduct()">Simpan Produk</button>
+  </div>
+</div>
+
+<!-- HIDDEN FILE INPUT for card photo change -->
+<input type="file" id="cardFileInput" class="hidden-file" accept="image/*" onchange="handleCardImgChange(event)">
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==============================
+   DATA STORE
+============================== */
+const defaultProducts = {
+  2: [ // PUMA
+    { name:"Puma Speedcat Ballet Women's - Pink", price:"IDR 1.799.000",bg:"linear-gradient(135deg,#fde8ea,#f5c8cc)", img:"puma speddcat1.jpeg" },
+    { name:"Puma Black T7 Women's Track Suit", price:"IDR 372.000",bg:"linear-gradient(135deg,#2c2c2c,#444)", img:"puma jacket black.jpeg" },
+    { name:"Puma Phase Backpack - Pink", price:"IDR 355.000",bg:"linear-gradient(135deg,#fdd0d5,#f8b0b8)", img:"tas puma pink.jpeg" },
+    { name:"Puma Pink Seatball", price:"IDR 309.000",bg:"linear-gradient(135deg,#f9c8d0,#f0aab5)", img:"pum tumbler.jpeg" },
+    { name:"Puma Stainless Steel Water Bottle", price:"IDR 429.000",bg:"linear-gradient(135deg,#e8e8e8,#d0d0d0)", img:null },
+    { name:"Puma Speedcat Clog - Red", price:"IDR 1.300.000", bg:"linear-gradient(135deg,#f55,#c33)", img:"pum speedct red.jpeg" },
+    { name:"PUMA X ROSé Women's Speedcat Suede", price:"IDR 1.499.000",bg:"linear-gradient(135deg,#f8e0e5,#f0c0ca)", img:"pum x rose.jpeg" },
+    { name:"Puma Palcon 20 Slide Sandals & Mules", price:"IDR 239.000",bg:"linear-gradient(135deg,#f0ede8,#e0dbd4)", img:"pum sendl.jpeg" },
+    { name:"Puma Womens Flush Tote", price:"IDR 589.000",bg:"linear-gradient(135deg,#d4a0aa,#c08090)", img:"pum totbg.jpeg" },
+  ],
+  3: [ // NIKE
+    { name:"Nike Training Duffel Bag - Black", price:"IDR 609.000",bg:"linear-gradient(135deg,#222,#444)", img:"gym ts nike.jpeg" },
+    { name:"Nike Brasilia JDI Mini Backpack - Pink Blue", price:"IDR 448.000",bg:"linear-gradient(135deg,#b0c8f8,#88a8e8)", img:"ts blue nike.jpeg" },
+    { name:"Nike Element Lol Backpack - Pink Blue", price:"IDR 320.000",bg:"linear-gradient(135deg,#c8d8f0,#a8bce0)", img:"ts pink nike.jpeg"},
+    { name:"Nike Myna Infini Retro Grahams - Grey", price:"IDR 1.290.000",bg:"linear-gradient(135deg,#d8d8d8,#c0c0c0)", img:"septu nike grey.jpeg" },
+    { name:"Nike Women's 75r Sneakers - Light Blue", price:"IDR 1.490.000",bg:"linear-gradient(135deg,#c8e8f8,#a8d0f0)", img:"nike blue.jpeg" },
+    { name:"Nike Women's 75 Br Sneakers - Pink", price:"IDR 1.490.000",bg:"linear-gradient(135deg,#f8d0d8,#f0b0bc)", img:"sptu nike burgndy.jpeg" },
+    { name:"Nike Maumau Tech Fleece Windrunner", price:"IDR 1.799.000",bg:"linear-gradient(135deg,#e0e8e0,#c0d0c0)", img:"nike crop.jpeg" },
+    { name:"Nike Brasilia Bucket Hat - White", price:"IDR 380.000",bg:"linear-gradient(135deg,#f0f0f0,#e0e0e0)", img:"nike bunnie bucket.jpeg " },
+    { name:"Nike Girls Spirit Jacket - Pink", price:"IDR 1.260.000",bg:"linear-gradient(135deg,#f8d0e0,#f0b0c8)", img:"nike jcket.jpeg" },
+  ],
+  4: [ // NEW BALANCE
+    { name:"New Balance 530 Grossy Pink", price:"IDR 1.700.000", bg:"linear-gradient(135deg,#f8d8e0,#f0b8c8)", img:"nb pink.jpeg" },
+    { name:"New Balance 500 - Blue", price:"IDR 1.700.000", bg:"linear-gradient(135deg,#c8d8f8,#a8c0f0)", img:"nb pink2.jpeg" },
+    { name:"New Balance 530W Lace New Hue - Pink", price:"IDR 2.300.000", bg:"linear-gradient(135deg,#f0d8e8,#e8c0d8)", img:"nb biru.jpeg" },
+    { name:"New Balance Sneakers Bradation Bicolor", price:"IDR 1.700.000",bg:"linear-gradient(135deg,#e8f0e8,#d0e0d0)", img:"nb jcket.jpeg" },
+    { name:"New Balance Classic 06 - Pink", price:"IDR 260.000",bg:"linear-gradient(135deg,#f8e0e8,#f0c8d8)", img:"nb tpi.jpeg" },
+    { name:"New Balance Classic 06 - Pink Alt", price:"IDR 1.799.000",bg:"linear-gradient(135deg,#f5e8ec,#ebd0d8)", img:"seteln nb.jpeg" },
+    { name:"New Balance Shoes Solo Bicolor", price:"IDR 640.000",bg:"linear-gradient(135deg,#e8e0f0,#d8c8e8)", img:"ts nb 1.jpeg" },
+    { name:"Tag Heuer Connected Calibre 5 x NB", price:"IDR 25.250.000",bg:"linear-gradient(135deg,#c8c8c8,#a0a0a0)", img:"jm nb.jpeg" },
+    { name:"New Balance Legacy Backpack", price:"IDR 780.000",bg:"linear-gradient(135deg,#e0e8f0,#c8d8e8)", img:"ts nb 2.jpeg" },
+  ],
+  5: [ // ADIDAS
+    { name:"Adidas Classic Bos 35 Backpack - Pink", price:"IDR 549.000",bg:"linear-gradient(135deg,#ffd8e0,#ffb8c8)", img:"ts dids.jpeg" },
+    { name:"Adidas Sporty Retro Shoulder Bag - Brown", price:"IDR 449.000",bg:"linear-gradient(135deg,#d4b898,#c4a080)", img:"sholderbg dids.jpeg" },
+    { name:"Adidas Satin Mini Shopper Bag - Black", price:"IDR 430.000",bg:"linear-gradient(135deg,#1a1a1a,#333)", img:"topi dids.jpeg" },
+    { name:"Adidas Osedgaln Bodywarmer TF - Pink", price:"IDR 1.799.000",bg:"linear-gradient(135deg,#f8d8e0,#f0b8c8)", img:"dids jcket pink.jpeg" },
+    { name:"Adidas Red Cut Chee Socks", price:"IDR 185.000",bg:"linear-gradient(135deg,#f8f0f0,#f0e0e0)", img:"kos kki dids.jpeg"},
+    { name:"Adidas Choreogriam New Foot Jacket - White", price:"IDR 750.000",bg:"linear-gradient(135deg,#f0f0f0,#e0e0e0)", img:"chongsm dids.jpeg" },
+    { name:"Adidas Samba DB - Burgundy", price:"IDR 1.799.000",bg:"linear-gradient(135deg,#5a1a2a,#3a0a1a)", img:"dids smb.jpeg" },
+    { name:"Adidas Trefoil Snapback Suede - Black", price:"IDR 209.000",bg:"linear-gradient(135deg,#222,#444)", img:"topi dids.jpeg" },
+    { name:"Adidas Originals MEN's Handball Spezial", price:"IDR 1.099.000",bg:"linear-gradient(135deg,#1a1a1a,#333)", img:"sptu dids.jpeg" },
+  ],
+};
+
+// Working copy (will hold uploaded images)
+const products = JSON.parse(JSON.stringify(defaultProducts));
+
+/* ==============================
+   RENDER
+============================== */
+function renderGrid(pageNum) {
+  const grid = document.getElementById('grid' + pageNum);
+  const list = products[pageNum];
+  document.getElementById('countNum' + pageNum).textContent = list.length;
+
+  grid.innerHTML = list.map((p, i) => `
+    <div class="product-card" onclick="openDetail(${pageNum}, ${i})">
+      <div class="product-card-img" id="cardImg-${pageNum}-${i}">
+        ${p.img
+          ? `<img src="${p.img}" alt="${p.name}">`
+          : `<div class="prod-img-placeholder" style="background:${p.bg};">${p.emoji}</div>`
+        }
+        <div class="upload-overlay" onclick="event.stopPropagation(); triggerCardUpload(${pageNum}, ${i})">
+          <div class="upload-overlay-icon">📷</div>
+          <div class="upload-overlay-text">Tambah / Ganti<br>Foto</div>
+        </div>
+      </div>
+      <p class="product-card-name">${p.name}</p>
+      <p class="product-card-price">${p.price}</p>
+    </div>
+  `).join('');
+}
+
+function renderAll() {
+  [2, 3, 4, 5].forEach(renderGrid);
+  renderRecommended();
+}
+
+function renderRecommended() {
+  const rec = document.getElementById('recGrid');
+  // Pick 3 random products across all brands
+  const all = [];
+  [2,3,4,5].forEach(p => products[p].forEach((prod, i) => all.push({...prod, page:p, idx:i})));
+  const picks = [all[0], all[9], all[24]]; // fixed picks
+  rec.innerHTML = picks.map(p => `
+    <div class="rec-card" onclick="showPage(${p.page}); setTimeout(()=>openDetail(${p.page},${p.idx}),200)">
+      <div class="rec-card-img">
+        ${p.img
+          ? `<img src="${p.img}" alt="${p.name}">`
+          : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:${p.bg};font-size:24px;">${p.emoji}</div>`
+        }
+      </div>
+      <p class="rec-card-name">${p.name}</p>
+      <p class="rec-card-price">${p.price}</p>
+    </div>
+  `).join('');
+}
+
+/* ==============================
+   PAGE NAV
+============================== */
+function showPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + n).classList.add('active');
+  window.scrollTo(0, 0);
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.nav-item')[n === 1 ? 0 : n - 1].classList.add('active');
+}
+
+/* ==============================
+   PRODUCT DETAIL MODAL
+============================== */
+function openDetail(pageNum, idx) {
+  const p = products[pageNum][idx];
+  const mi = document.getElementById('modalImg');
+  if (p.img) {
+    mi.innerHTML = `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">`;
+  } else {
+    mi.style.background = p.bg;
+    mi.innerHTML = `<span style="font-size:60px;">${p.emoji}</span>`;
+  }
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalPrice').textContent = p.price;
+  document.getElementById('productModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetailModal(e) {
+  if (e.target === document.getElementById('productModal')) closeDetailModalDirect();
+}
+function closeDetailModalDirect() {
+  document.getElementById('productModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ==============================
+   CARD PHOTO UPLOAD (hover overlay)
+============================== */
+let _cardPage = null, _cardIdx = null;
+
+function triggerCardUpload(pageNum, idx) {
+  _cardPage = pageNum;
+  _cardIdx = idx;
+  document.getElementById('cardFileInput').click();
+}
+
+function handleCardImgChange(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    products[_cardPage][_cardIdx].img = e.target.result;
+    renderGrid(_cardPage);
+    renderRecommended();
+    showToast('✓ Foto produk berhasil diupload!');
+    event.target.value = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ==============================
+   ADD PRODUCT MODAL
+============================== */
+let _addPage = null;
+let _newImgData = null;
+
+function openAddModal(pageNum) {
+  _addPage = pageNum;
+  _newImgData = null;
+  // reset form
+  document.getElementById('newName').value = '';
+  document.getElementById('newPrice').value = '';
+  document.getElementById('newEmoji').value = '👟';
+  resetDropArea();
+  document.getElementById('addModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function triggerUpload() {
+  document.getElementById('newProdImg').click();
+}
+
+function handleNewImg(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    _newImgData = e.target.result;
+    const area = document.getElementById('dropArea');
+    area.classList.add('has-img');
+    area.innerHTML = `
+      <input type="file" id="newProdImg" accept="image/*" onchange="handleNewImg(event)" style="display:none">
+      <img src="${_newImgData}" alt="preview">
+      <div class="img-change-overlay" onclick="document.getElementById('newProdImg').click()">🔄 Ganti Foto</div>
+    `;
+    event.target.value = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetDropArea() {
+  const area = document.getElementById('dropArea');
+  area.className = 'img-drop-area';
+  area.innerHTML = `
+    <input type="file" id="newProdImg" accept="image/*" onchange="handleNewImg(event)">
+    <div class="img-drop-icon">🖼️</div>
+    <div class="img-drop-text">Klik untuk pilih foto produk<br><small>JPG, PNG, WEBP</small></div>
+    <div class="img-change-overlay">🔄 Ganti Foto</div>
+  `;
+}
+
+function saveNewProduct() {
+  const name = document.getElementById('newName').value.trim();
+  const priceRaw = document.getElementById('newPrice').value.trim();
+  const emoji = document.getElementById('newEmoji').value.trim() || '👟';
+
+  if (!name) { showToast('⚠️ Nama produk harus diisi'); return; }
+  if (!priceRaw) { showToast('⚠️ Harga harus diisi'); return; }
+
+  const priceNum = parseInt(priceRaw);
+  const formatted = 'IDR ' + priceNum.toLocaleString('id-ID');
+
+  const colors = [
+    'linear-gradient(135deg,#fde8ea,#f5c8cc)',
+    'linear-gradient(135deg,#c8d8f8,#a8c0f0)',
+    'linear-gradient(135deg,#e0e8e0,#c0d0c0)',
+    'linear-gradient(135deg,#f8e0e8,#f0c8d8)',
+    'linear-gradient(135deg,#e8e0f0,#d8c8e8)',
+  ];
+  const bg = colors[Math.floor(Math.random() * colors.length)];
+
+  products[_addPage].push({ name, price: formatted, emoji, bg, img: _newImgData });
+  renderGrid(_addPage);
+  renderRecommended();
+  closeAddModal();
+  showToast('✓ Produk baru berhasil ditambahkan!');
+}
+
+/* ==============================
+   TOAST
+============================== */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ==============================
+   DRAG & DROP on drop area
+============================== */
+document.addEventListener('dragover', e => {
+  if (document.getElementById('addModal').classList.contains('open')) e.preventDefault();
+});
+document.addEventListener('drop', e => {
+  if (!document.getElementById('addModal').classList.contains('open')) return;
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    handleNewImg({ target: { files: [file], value: '' } });
+  }
+});
+
+/* =========================
+   HERO AUTO SLIDER
+========================= */
+
+const slides = document.querySelectorAll('.hero-slide');
+const dots = document.querySelectorAll('.dot');
+
+let currentSlide = 0;
+
+function showSlide(index){
+
+  slides.forEach(slide => {
+    slide.classList.remove('active');
+  });
+
+  dots.forEach(dot => {
+    dot.classList.remove('active');
+  });
+
+  slides[index].classList.add('active');
+  dots[index].classList.add('active');
+}
+
+function nextSlide(){
+  currentSlide++;
+
+  if(currentSlide >= slides.length){
+    currentSlide = 0;
+  }
+
+  showSlide(currentSlide);
+}
+
+setInterval(nextSlide, 5000);
+
+/* ==============================
+   INIT
+============================== */
+renderAll();
+</script>
+</body>
+</html>
